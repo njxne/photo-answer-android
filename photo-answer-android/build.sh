@@ -41,3 +41,15 @@ echo "任务  : $TASK"
 echo ""
 echo "APK:"
 ls -la app/build/outputs/apk/release/ 2>/dev/null || true
+
+# 复制成中英文两个名字，方便分发
+SRCAPK=app/build/outputs/apk/release/app-release.apk
+if [ -f "$SRCAPK" ]; then
+    VER=$(grep -m1 'versionName' app/build.gradle | sed 's/.*"\(.*\)".*/\1/')
+    mkdir -p out
+    cp "$SRCAPK" "out/PhotoAnswer-v$VER.apk"
+    cp "$SRCAPK" "out/拍照答题-v$VER.apk"
+    echo ""
+    echo "输出:"
+    ls -la out/
+fi

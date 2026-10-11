@@ -3,6 +3,9 @@
 /local.properties
 /app/build/
 /build/
-*.apk
 *.idsig
 *.keystore
+*.apk
+# 放行 out/ 目录里要分发的 APK（上面 *.apk 会挡住，这里用 ! 解禁）
+!/photo-answer-android/out/
+!/photo-answer-android/out/*.apk
