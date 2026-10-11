@@ -1,0 +1,8 @@
+/.aicode/
+/.gradle/
+/local.properties
+/app/build/
+/build/
+*.apk
+*.idsig
+*.keystore
