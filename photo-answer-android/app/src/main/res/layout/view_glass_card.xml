@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  可复用的液态玻璃卡片：LiquidGlassView 作为容器，内容放在里面。
+  用法：其他布局 <include layout="@layout/view_glass_card" />，
+  然后在代码里 setProvider() 绑定背景采样源。
+-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <dev.liquidglass.view.LiquidGlassView
+        android:id="@+id/glassCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="1dp">
+
+        <LinearLayout
+            android:id="@+id/glassCardContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp" />
+    </dev.liquidglass.view.LiquidGlassView>
+</merge>

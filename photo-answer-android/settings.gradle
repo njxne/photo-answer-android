@@ -1,5 +1,9 @@
 pluginManagement {
     repositories {
+        // 阿里云镜像优先（国内快）
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         google()
         mavenCentral()
         gradlePluginPortal()
@@ -8,8 +12,12 @@ pluginManagement {
 
 dependencyResolutionManagement {
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
         google()
         mavenCentral()
+        // 液态玻璃库装在 ~/.m2（该库未发布到 Maven Central）
+        mavenLocal()
     }
 }
 

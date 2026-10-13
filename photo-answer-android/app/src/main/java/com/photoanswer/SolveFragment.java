@@ -23,6 +23,7 @@ public class SolveFragment extends Fragment {
     private final ImagePicker picker = new ImagePicker(this);
 
     private View answerCard;
+    private View answerGlass;
     private View questionStrip;
     private LinearLayout questionBar;
     private final List<Chip> chips = new ArrayList<>();
@@ -50,6 +51,7 @@ public class SolveFragment extends Fragment {
         picker.bind(v);
 
         answerCard = v.findViewById(R.id.answerCard);
+        answerGlass = v.findViewById(R.id.answerGlass);
         questionStrip = v.findViewById(R.id.questionStrip);
         questionBar = v.findViewById(R.id.questionBar);
         status = v.findViewById(R.id.txtStatus);
@@ -70,7 +72,7 @@ public class SolveFragment extends Fragment {
             questionBar.removeAllViews();
             chips.clear();
             questionStrip.setVisibility(View.GONE);
-            answerCard.setVisibility(View.GONE);
+            answerGlass.setVisibility(View.GONE);
 
             Ai.run(requireActivity(), "solve", new ArrayList<>(picker.uris()), null,
                     new Ai.Cb() {
@@ -86,19 +88,21 @@ public class SolveFragment extends Fragment {
                             parts.clear();
                             parts.addAll(Answers.split(a));
                             buildChips();
-                            answerCard.setVisibility(View.VISIBLE);
+                            answerGlass.setVisibility(View.VISIBLE);
                             showPart(0);
                         }
 
                         @Override
                         public void onFail(String m) {
-                            answerCard.setVisibility(View.VISIBLE);
+                            answerGlass.setVisibility(View.VISIBLE);
                             questionStrip.setVisibility(View.GONE);
                             answer.setText("");
                             status.setText("失败：" + m);
                         }
                     });
         });
+
+        Glass.bindCard((dev.liquidglass.view.LiquidGlassView) answerGlass, v);
         return v;
     }
 

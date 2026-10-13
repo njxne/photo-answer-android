@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  液态玻璃布局：内容放进 LiquidGlassProviderLayout（背景采样源），
+  玻璃元素（底部栏/顶栏）作为它的兄弟节点叠在上层 —— 库的规则要求玻璃节点不能在 provider 内部。
+-->
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -6,56 +10,86 @@
     android:layout_height="match_parent"
     android:background="?attr/colorSurface">
 
-    <LinearLayout
+    <!-- 背景层：所有内容放在这里，玻璃会采样它 -->
+    <dev.liquidglass.view.LiquidGlassProviderLayout
+        android:id="@+id/glassProvider"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorSurface"
-            app:elevation="0dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="?attr/actionBarSize"
-                android:background="?attr/colorSurface"
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp"
-                app:title="@string/app_name"
-                app:subtitle="@string/app_slogan"
-                app:titleTextAppearance="@style/TextAppearance.Material3.TitleLarge"
-                app:subtitleTextAppearance="@style/TextAppearance.Material3.BodySmall">
+                android:background="@android:color/transparent"
+                app:elevation="0dp">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/gradeChip"
-                    style="@style/Widget.Material3.Chip.Assist"
-                    android:layout_width="wrap_content"
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end|center_vertical"
-                    android:layout_marginEnd="6dp"
-                    android:text="@string/tab_me"
-                    android:textColor="@color/on_brand_container"
-                    app:chipBackgroundColor="@color/brand_container"
-                    app:chipStrokeWidth="0dp" />
-            </com.google.android.material.appbar.MaterialToolbar>
-        </com.google.android.material.appbar.AppBarLayout>
+                    android:minHeight="?attr/actionBarSize"
+                    android:background="@android:color/transparent"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    app:title="@string/app_name"
+                    app:subtitle="@string/app_slogan"
+                    app:titleTextAppearance="@style/TextAppearance.Material3.TitleLarge"
+                    app:subtitleTextAppearance="@style/TextAppearance.Material3.BodySmall">
 
-        <FrameLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/gradeChip"
+                        style="@style/Widget.Material3.Chip.Assist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="6dp"
+                        android:text="@string/tab_me"
+                        android:textColor="@color/on_brand_container"
+                        app:chipBackgroundColor="@color/brand_container"
+                        app:chipStrokeWidth="0dp" />
+                </com.google.android.material.appbar.MaterialToolbar>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <FrameLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <!-- 占位：底部栏的高度，避免内容被玻璃栏挡住 -->
+            <View
+                android:id="@+id/bottomNavSpacer"
+                android:layout_width="match_parent"
+                android:layout_height="72dp" />
+        </LinearLayout>
+    </dev.liquidglass.view.LiquidGlassProviderLayout>
+
+    <!-- 玻璃层 1：顶栏（叠在最上，采样下方内容） -->
+    <dev.liquidglass.view.LiquidGlassView
+        android:id="@+id/glassTopBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:focusable="false" />
+
+    <!-- 玻璃层 2：底部导航栏 -->
+    <dev.liquidglass.view.LiquidGlassView
+        android:id="@+id/glassBottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorSurface"
+            android:background="@android:color/transparent"
             app:labelVisibilityMode="labeled"
             app:menu="@menu/bottom_nav" />
-    </LinearLayout>
+    </dev.liquidglass.view.LiquidGlassView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

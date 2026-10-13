@@ -25,14 +25,21 @@
             android:text="@string/start_solve"
             android:textSize="16sp" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/answerCard"
-            style="@style/Widget.App.Card"
+        <!-- 答案卡：玻璃材质，内容仍是 MaterialCardView（透明底） -->
+        <dev.liquidglass.view.LiquidGlassView
+            android:id="@+id/answerGlass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:visibility="gone"
             tools:visibility="visible">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/answerCard"
+                style="@style/Widget.App.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -100,6 +107,7 @@
                     android:textAppearance="@style/TextAppearance.App.Answer"
                     android:textIsSelectable="true" />
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+            </com.google.android.material.card.MaterialCardView>
+        </dev.liquidglass.view.LiquidGlassView>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

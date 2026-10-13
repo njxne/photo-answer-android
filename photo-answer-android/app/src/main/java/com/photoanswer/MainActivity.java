@@ -2,6 +2,8 @@ package com.photoanswer;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +13,9 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.transition.MaterialSharedAxis;
+
+import dev.liquidglass.view.LiquidGlassProviderLayout;
+import dev.liquidglass.view.LiquidGlassView;
 
 /** 单 Activity + 四个 Tab（Fragment 用 show/hide 切换，保留各自界面状态）。 */
 public class MainActivity extends AppCompatActivity {
@@ -45,6 +50,30 @@ public class MainActivity extends AppCompatActivity {
         int initial = (b == null) ? R.id.nav_solve : nav.getSelectedItemId();
         nav.setSelectedItemId(initial == 0 ? R.id.nav_solve : initial);
         select(nav.getSelectedItemId());
+
+        setupGlass();
+    }
+
+    /**
+     * 配置液态玻璃：把顶栏/底栏设成玻璃材质（样式统一在 {@link Glass} 里）。
+     * 库的规则要求玻璃节点与 provider 是兄弟关系，已在布局里按此排布。
+     */
+    private void setupGlass() {
+        LiquidGlassProviderLayout provider = findViewById(R.id.glassProvider);
+
+        LiquidGlassView bottom = findViewById(R.id.glassBottomBar);
+        Glass.bar(bottom, provider);
+
+        LiquidGlassView top = findViewById(R.id.glassTopBar);
+        Glass.topBar(top, provider);
+
+        // 顶栏玻璃对齐 AppBar 的高度
+        View appBar = findViewById(R.id.appBar);
+        appBar.post(() -> {
+            ViewGroup.LayoutParams lp = top.getLayoutParams();
+            lp.height = appBar.getHeight();
+            top.setLayoutParams(lp);
+        });
     }
 
     @Override

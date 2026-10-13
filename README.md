@@ -22,6 +22,7 @@
 
 ### 其他
 - **年级设置**：1–12 年级，答案写法按小学 / 初中 / 高中三档自动调整
+- **液态玻璃**：全局使用 LiquidGlass 库（顶栏、底部栏、卡片均为玻璃材质，带折射/色散/边缘高光）
 - **历史记录**：本地保存，可回看、复制、删除
 - **自建相机**：用 CameraX 写的，不调用系统相机，支持闪光灯
 - **分页动画**：用 Material 官方的 MaterialSharedAxis / MaterialFadeThrough
@@ -67,6 +68,19 @@ cd photo-answer-android && bash build.sh
 > ⚠️ 在 aarch64 机器上必须指定 aapt2 为 `/root/android/sdk/build-tools/35.0.0/aapt2`。
 > AGP 自带的 aapt2 是 x86_64 版本，在 aarch64 上会直接崩溃（SIGILL）。
 
+### 液态玻璃依赖（首次构建前需要做）
+
+液态玻璃用的是 [LiquidGlass](https://github.com/Abdullajon1881/LiquidGlass) 的 `liquidglass-view` 模块。
+它**尚未发布到 Maven Central**，需要先编译到本地仓库：
+
+```bash
+git clone --depth 1 https://github.com/Abdullajon1881/LiquidGlass.git
+cd LiquidGlass
+./gradlew :liquidglass-core:publishToMavenLocal :liquidglass-view:publishToMavenLocal
+```
+
+项目已配置 `mavenLocal()`，编译完即可正常构建。
+
 ---
 
 ## 技术栈
@@ -74,7 +88,7 @@ cd photo-answer-android && bash build.sh
 | 项目 | 选型 |
 |---|---|
 | 构建 | Gradle 8.7 + AGP 8.5.1 |
-| 界面 | Material Components 3（Material3，全部为官方控件，无自绘） |
+| 界面 | Material Components 3（Material3，全部为官方控件，无自绘） + LiquidGlass（液态玻璃） |
 | 相机 | CameraX 1.3.4 |
 | 网络 | HttpURLConnection + OpenAI 兼容接口 |
 | 图片 | 长边 2048，JPEG 质量自适应 |
@@ -117,6 +131,7 @@ A homework-help app in the style of Zuoyebang. Take a photo and get **the standa
 
 ### Also
 - **Grade setting**: grades 1–12, answer style adapts across primary / junior / senior levels
+- **Liquid glass**: global LiquidGlass integration (top bar, bottom bar and cards are glass with refraction, dispersion and rim highlight)
 - **History**: stored locally, with view, copy and delete
 - **Built-in camera**: built with CameraX, no system camera app, flash supported
 - **Page transitions**: official Material motion (MaterialSharedAxis / MaterialFadeThrough)
@@ -162,6 +177,19 @@ Output path: `app/build/outputs/apk/release/app-release.apk`
 > ⚠️ On aarch64 machines you must set aapt2 to `/root/android/sdk/build-tools/35.0.0/aapt2`.
 > The aapt2 bundled with AGP is x86_64 and will crash immediately (SIGILL) on aarch64.
 
+### Liquid glass dependency (required before first build)
+
+Liquid glass comes from the `liquidglass-view` module of [LiquidGlass](https://github.com/Abdullajon1881/LiquidGlass).
+It is **not yet published to Maven Central**, so build it into your local repository first:
+
+```bash
+git clone --depth 1 https://github.com/Abdullajon1881/LiquidGlass.git
+cd LiquidGlass
+./gradlew :liquidglass-core:publishToMavenLocal :liquidglass-view:publishToMavenLocal
+```
+
+`mavenLocal()` is already configured, so the build works after that.
+
 ---
 
 ## Tech Stack
@@ -169,7 +197,7 @@ Output path: `app/build/outputs/apk/release/app-release.apk`
 | Item | Choice |
 |---|---|
 | Build | Gradle 8.7 + AGP 8.5.1 |
-| UI | Material Components 3 (Material3, all official widgets, no custom drawing) |
+| UI | Material Components 3 (Material3, all official widgets, no custom drawing) + LiquidGlass |
 | Camera | CameraX 1.3.4 |
 | Network | HttpURLConnection + OpenAI-compatible API |
 | Image | 2048px long edge, adaptive JPEG quality |
